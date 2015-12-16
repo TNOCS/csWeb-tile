@@ -1,5 +1,5 @@
 {
-    "name": "csWeb-tile",
+    "name": "csweb-tile",
     "version": "0.0.1",
     "description": "Wrapper around MapBox's TileLive application to offer a simple npm package for serving tile sources in csWeb.",
     "main": "index.js",
