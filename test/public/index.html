@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<link rel="stylesheet" href="js/leaflet.css" />
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<script charset="UTF-8" type="text/javascript" src="js/leaflet.js"></script>
+	<title>test map</title>
+	<style type="text/css">
+		#map {
+			width: 100%;
+			height: 98vh;
+		}
+	</style>
+	<script type="text/javascript">
+		function test() {
+			var map = L.map('map').setView([18.446218, 1.409125], 13);
+	
+			L.tileLayer('http://localhost:8888/vmg_mali_kidal/{z}/{x}/{y}.png', {
+				maxZoom: 18,
+				attribution: 'TNO',
+				id: 'vmg_mali_kidal'
+			}).addTo(map);
+		}
+	</script>
+</head>
+
+<body onload="test()">
+	<div id="map"></div>
+</body>
+
+</html>
