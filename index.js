@@ -1,12 +1,7 @@
 var path = require('path');
 var fs = require('fs');
+var request = require('request');
 var tilelive = require('tilelive');
-// Iterate over all sub-folders in sources.
-// Each sub-folder's name needs to match the tilelive module name,
-// e.g. all mbtiles need to be in the mbtiles sub folder, as that 
-// is the name of the corresponding node package.
-// Register each sub-folder name that is not empty
-// In that folder, open all files.
 /** Options */
 var TileSourceOptions = (function () {
     function TileSourceOptions() {
@@ -21,6 +16,9 @@ exports.TileSourceOptions = TileSourceOptions;
 ;
 var TileSource = (function () {
     function TileSource(app, options) {
+        var _this = this;
+        this.app = app;
+        this.protocols = [];
         var defaultOptions = new TileSourceOptions();
         if (!options)
             options = defaultOptions;
@@ -32,58 +30,99 @@ var TileSource = (function () {
                 next();
             });
         }
-        /** Folder that contains the source map files. */
-        var tileFolder = options.sources || defaultOptions.sources;
-        fs.readdir(tileFolder, function (err, protocols) {
-            if (err) {
-                console.log(("Error reading " + tileFolder + ": ") + err);
-                return;
-            }
-            if (!protocols || protocols.length === 0) {
-                console.log("No sources found in folder " + tileFolder + ".");
-                return;
-            }
-            protocols.forEach(function (protocol) {
-                require(protocol).registerProtocols(tilelive);
-                console.log("Registering protocol " + protocol + ".");
-                var sourceFolder = path.join(tileFolder, protocol);
-                fs.readdir(sourceFolder, function (err, files) {
-                    if (err) {
-                        console.log('Error reading folder ' + protocol + ': ' + err);
-                        return;
-                    }
-                    files.forEach(function (file) {
-                        var sourceFile = path.join(sourceFolder, file);
-                        tilelive.load('mbtiles://' + sourceFile, function (err, source) {
-                            if (err) {
-                                throw err;
-                            }
-                            console.log("Loading " + protocol + ": " + sourceFile);
-                            var name = path.basename(file, '.' + protocol);
-                            app.get('/' + name + '/:z/:x/:y.*', function (req, res) {
-                                var z = +req.params.z;
-                                var x = +req.params.x;
-                                var y = +req.params.y;
-                                //console.log('%s: get tile %d, %d, %d', mbSource, z, x, y);
-                                source.getTile(z, x, y, function (err, tile, headers) {
-                                    if (err) {
-                                        res.status(404);
-                                        res.send(err.message);
-                                        console.log('Error getting %s: tile %d, %d, %d', sourceFile, z, x, y);
-                                        console.log(err.message);
-                                    }
-                                    else {
-                                        res.set(headers);
-                                        res.send(tile);
-                                    }
-                                });
-                            });
-                        });
+        if (options.tileSources) {
+            // Source files are explicitly stated
+            options.tileSources.forEach(function (source) {
+                _this.load(source.protocol, source.path, source.fallbackUri, _this.pathIsAbsolute(source.path) ? '' : __dirname);
+            });
+        }
+        else {
+            // Folder that contains the source map files.
+            var tileFolder = options.sources || defaultOptions.sources;
+            fs.readdir(tileFolder, function (err, protocols) {
+                if (err) {
+                    console.log(("Error reading " + tileFolder + ": ") + err);
+                    return;
+                }
+                if (!protocols || protocols.length === 0) {
+                    console.log("No sources found in folder " + tileFolder + ".");
+                    return;
+                }
+                protocols.forEach(function (protocol) {
+                    var sourceFolder = path.join(tileFolder, protocol);
+                    fs.readdir(sourceFolder, function (err, files) {
+                        if (err) {
+                            console.log("Error reading folder " + protocol + ": " + err);
+                            return;
+                        }
+                        files.forEach(function (file) { return _this.load(protocol, file, '', sourceFolder); });
                     });
                 });
             });
-        });
+        }
     }
+    /** Register the protocol. */
+    TileSource.prototype.registerProtocol = function (protocol) {
+        if (this.protocols.indexOf(protocol) >= 0)
+            return;
+        this.protocols.push(protocol);
+        require(protocol).registerProtocols(tilelive);
+        console.log("Registering protocol " + protocol + ".");
+    };
+    /**
+     * Returns true if your path is absolute.
+     * See http://stackoverflow.com/questions/21698906/how-to-check-if-a-path-is-absolute-or-relative
+     */
+    TileSource.prototype.pathIsAbsolute = function (yourPath) {
+        return path.resolve(yourPath) === path.normalize(yourPath).replace(RegExp(path.sep + '$'), '');
+    };
+    /**
+     * Load a file using the proper protocol.
+     * NOTE: Only tested for mbtiles.
+     *
+     * @param  {string} protocol
+     * @param  {string} file
+     * @param  {string} fallbackUri If specified, used to redirect clients when a lookup fails
+     * @param  {string} sourceFolder? Optional source folder. If not specified, the file is absolute.
+     */
+    TileSource.prototype.load = function (protocol, file, fallbackUri, sourceFolder) {
+        var _this = this;
+        this.registerProtocol(protocol);
+        // var re = new RegExp('/[a-zA-Z\d]*\/(?<z>\d+)\/(?<x>\d+)\/(?<y>\d+)\./');
+        var sourceFile = sourceFolder ? path.join(sourceFolder, file) : file;
+        tilelive.load((protocol + "://") + sourceFile, function (err, source) {
+            console.log("Loading " + protocol + ": " + sourceFile);
+            if (err) {
+                throw err;
+            }
+            var name = path.basename(file, '.' + protocol);
+            _this.app.get('/' + name + '/:z/:x/:y.*', function (req, res) {
+                var z = +req.params.z;
+                var x = +req.params.x;
+                var y = +req.params.y;
+                //console.log('%s: get tile %d, %d, %d', mbSource, z, x, y);
+                source.getTile(z, x, y, function (err, tile, headers) {
+                    if (err) {
+                        if (fallbackUri) {
+                            var ext = path.extname(req.url);
+                            var newUrl = fallbackUri + "/" + z + "/" + x + "/" + y + ext;
+                            request(newUrl).pipe(res);
+                        }
+                        else {
+                            res.status(404);
+                            res.send(err.message);
+                            console.log('Error getting %s: tile %d, %d, %d', sourceFile, z, x, y);
+                            console.log(err.message);
+                        }
+                    }
+                    else {
+                        res.set(headers);
+                        res.send(tile);
+                    }
+                });
+            });
+        });
+    };
     return TileSource;
 })();
 exports.TileSource = TileSource;

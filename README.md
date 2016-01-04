@@ -27,6 +27,20 @@ cs.start(() => {
     console.log('started');
 });
 ```
+
+Alternatively, you can specify the tile sources manually by setting the tileSources property directly, e.g. In this case, you can also include a fallback URI, which will be used when the primary source returns an error (i.e. you don't have the tile).
+```
+cs.start(() => {
+    var ts = new tilesource.TileSource(cs.server, <tilesource.TileSourceOptions>{
+        tileSources: [{
+            protocol: 'mbtiles',
+            path: path.join(__dirname, 'tilesources'),
+            fallbackUri: ''}]
+    });
+    console.log('started');
+});
+```
+
 5. Finally, add the new tile source to your ```projects.json``` file, set it to ```isDefault: true``` (making sure that you have no other maps that set it too) 
 e.g.
 ```
