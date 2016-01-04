@@ -40,20 +40,3 @@ cs.start(() => {
     console.log('started');
 });
 ```
-
-e.g.
-```
-    "baselayers": [{
-        "title": "MYMBTILES",
-        "subtitle": "",
-        "url": "http://localhost:3003/MYMBTILESWITHOUTEXTENSION/{z}/{x}/{y}.png",
-        "isDefault": true,
-        "minZoom": 0,
-        "maxZoom": 19,
-        "cesium_url": "http://localhost:3003/MYMBTILESWITHOUTEXTENSION/",
-        "cesium_maptype": "openstreetmap",
-        "attribution": "",
-        "preview": ""
-    }, {
-...
-```
