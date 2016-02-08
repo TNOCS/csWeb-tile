@@ -15,7 +15,9 @@
         "typings/node/node.d.ts",
         "typings/express/express.d.ts",
         "typings/request/request.d.ts",
+        "typings/mkdirp/mkdirp.d.ts",
         "test/app.ts",
+        "test_mapnik.ts",
         "index.ts"
     ]
 }

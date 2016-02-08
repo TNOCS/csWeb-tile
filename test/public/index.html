@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
-
-<link rel="stylesheet" href="js/leaflet.css" />
-
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
-	<script charset="UTF-8" type="text/javascript" src="js/leaflet.js"></script>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6/leaflet.css" />
+	<script src="http://cdn.leafletjs.com/leaflet-0.6/leaflet.js" type="text/javascript"></script>
+	<style type="text/css">
+		html, body {height: 100%;overflow: hidden;}
+		#map {height: 100%;}
+	</style>
 	<title>test map</title>
 	<style type="text/css">
 		#map {
@@ -14,8 +16,25 @@
 			height: 98vh;
 		}
 	</style>
+</head>
+
+<body>
+	<div id="map"></div>
 	<script type="text/javascript">
-		function test() {
+        var map = new L.Map('map', {
+    	   center: [52.3773, 4.8889],
+	   	   zoom: 8
+        });
+        
+       	L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+    		attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+	    }).addTo(map);
+	
+        function bicycleTest() {
+           	L.tileLayer('http://localhost:8888/mainroad/{z}/{x}/{y}.png').addTo(map);
+        }
+    
+		function testKidal() {
 			var map = L.map('map').setView([18.446218, 1.409125], 13);
 	
 			L.tileLayer('http://localhost:8888/vmg_mali_kidal/{z}/{x}/{y}.png', {
@@ -24,11 +43,9 @@
 				id: 'vmg_mali_kidal'
 			}).addTo(map);
 		}
+        
+        bicycleTest();
 	</script>
-</head>
-
-<body onload="test()">
-	<div id="map"></div>
 </body>
 
 </html>

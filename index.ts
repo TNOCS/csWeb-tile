@@ -3,6 +3,7 @@ import path    = require('path');
 import fs      = require('fs');
 import express = require('express');
 import request = require('request');
+import mkdirp  = require('mkdirp');
 
 var tilelive = require('tilelive');
 
@@ -30,10 +31,14 @@ export class TileSourceOptions {
     /** source folder. If not set, uses ./sources */
     sources: string = path.join(__dirname, 'tilesources');
     /** Specify a source manually by setting its path. If set, ignores 'sources' folder. */
-    tileSources: ITileSource[]
+    tileSources: ITileSource[];
+    /** Path to the cache folder, if any. */
+    cache: string = path.join(__dirname, 'cache');
 };
 
 export class TileSource {
+    cacheFolder: string;
+
     constructor(private app: express.Express, options?: TileSourceOptions) {
         var defaultOptions = new TileSourceOptions();
         if (!options) options = defaultOptions;
@@ -45,6 +50,15 @@ export class TileSource {
                 res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
                 next();
             });
+        }
+
+        if (options.cache) {
+            this.cacheFolder = options.cache;
+            if (!fs.existsSync(this.cacheFolder)) {
+               mkdirp(this.cacheFolder, err => {
+                   if (err) console.error('Error creating cache folder: ' + err);
+               });
+            }
         }
 
         if (options.tileSources) {
@@ -84,7 +98,14 @@ export class TileSource {
     private registerProtocol(protocol: string) {
         if (this.protocols.indexOf(protocol) >= 0) return;
         this.protocols.push(protocol);
-        require(protocol).registerProtocols(tilelive);
+        switch (protocol) {
+            case 'mapnik':
+                require('tilelive-mapnik').registerProtocols(tilelive);
+                break;
+            default:
+                require(protocol).registerProtocols(tilelive);
+                break;
+        }
         console.log(`Registering protocol ${protocol}.`);
     }
 
@@ -114,12 +135,32 @@ export class TileSource {
             if (err) {
                 throw err;
             }
-            let name = path.basename(file, '.' + protocol);
-            this.app.get('/' + name + '/:z/:x/:y.*', function(req, res) {
-                var z = +req.params.z;
-                var x = +req.params.x;
-                var y = +req.params.y;
-                //console.log('%s: get tile %d, %d, %d', mbSource, z, x, y);
+            let name: string;
+            switch (protocol) {
+                case 'mapnik':
+                    name = path.basename(file, '.xml');
+                    break;
+                case 'mbtiles':
+                    name = path.basename(file, '.mbtiles');
+                    break;
+            }
+            this.app.get('/' + name + '/:z/:x/:y.*', (req, res) => {
+                var z = +req.params.z,
+                    x = +req.params.x,
+                    y = +req.params.y;
+
+                var dir: string,
+                    filename: string;
+
+                if (this.cacheFolder) {
+                    dir = `${this.cacheFolder}/${name}/${z}/${x}`;
+                    filename = `${dir}/${y}.png`;
+                    if (fs.existsSync(filename)) {
+                        // TODO make an async version by putting source.getTile in method.
+                        res.sendFile(filename);
+                        return;
+                    }
+                }
 
                 source.getTile(z, x, y, function(err, tile, headers) {
                     if (err) {
@@ -138,6 +179,12 @@ export class TileSource {
                     } else {
                         res.set(headers);
                         res.send(tile);
+                        if (this.cacheFolder) {
+                            fs.writeFile(filename, tile, function(err) {
+                                if (err) throw err;
+                                console.log('Saved map image to ' + filename);
+                            });
+                        }
                     }
                 });
             });

@@ -4,6 +4,7 @@ import fs         = require('fs');
 import express    = require('express');
 import TileSource = require('../index');
 
+// TODO Would it help if we use compression?
 var app = express();
 app.set('port', 8888);
 app.use(express.static(__dirname + '/public'));
