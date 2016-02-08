@@ -16,9 +16,12 @@ export declare class TileSourceOptions {
     sources: string;
     /** Specify a source manually by setting its path. If set, ignores 'sources' folder. */
     tileSources: ITileSource[];
+    /** Path to the cache folder, if any. */
+    cache: string;
 }
 export declare class TileSource {
     private app;
+    cacheFolder: string;
     constructor(app: express.Express, options?: TileSourceOptions);
     private protocols;
     /** Register the protocol. */
