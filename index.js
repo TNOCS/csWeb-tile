@@ -1,7 +1,6 @@
 var path = require('path');
 var fs = require('fs');
 var request = require('request');
-var mkdirp = require('mkdirp');
 var tilelive = require('tilelive');
 /** Options */
 var TileSourceOptions = (function () {
@@ -10,8 +9,6 @@ var TileSourceOptions = (function () {
         this.corrs = true;
         /** source folder. If not set, uses ./sources */
         this.sources = path.join(__dirname, 'tilesources');
-        /** Path to the cache folder, if any. */
-        this.cache = path.join(__dirname, 'cache');
     }
     return TileSourceOptions;
 })();
@@ -32,15 +29,6 @@ var TileSource = (function () {
                 res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
                 next();
             });
-        }
-        if (options.cache) {
-            this.cacheFolder = options.cache;
-            if (!fs.existsSync(this.cacheFolder)) {
-                mkdirp(this.cacheFolder, function (err) {
-                    if (err)
-                        console.error('Error creating cache folder: ' + err);
-                });
-            }
         }
         if (options.tileSources) {
             // Source files are explicitly stated
@@ -78,14 +66,7 @@ var TileSource = (function () {
         if (this.protocols.indexOf(protocol) >= 0)
             return;
         this.protocols.push(protocol);
-        switch (protocol) {
-            case 'mapnik':
-                require('tilelive-mapnik').registerProtocols(tilelive);
-                break;
-            default:
-                require(protocol).registerProtocols(tilelive);
-                break;
-        }
+        require(protocol).registerProtocols(tilelive);
         console.log("Registering protocol " + protocol + ".");
     };
     /**
@@ -114,27 +95,12 @@ var TileSource = (function () {
             if (err) {
                 throw err;
             }
-            var name;
-            switch (protocol) {
-                case 'mapnik':
-                    name = path.basename(file, '.xml');
-                    break;
-                case 'mbtiles':
-                    name = path.basename(file, '.mbtiles');
-                    break;
-            }
+            var name = path.basename(file, '.' + protocol);
             _this.app.get('/' + name + '/:z/:x/:y.*', function (req, res) {
-                var z = +req.params.z, x = +req.params.x, y = +req.params.y;
-                var dir, filename;
-                if (_this.cacheFolder) {
-                    dir = _this.cacheFolder + "/" + name + "/" + z + "/" + x;
-                    filename = dir + "/" + y + ".png";
-                    if (fs.existsSync(filename)) {
-                        // TODO make an async version by putting source.getTile in method.
-                        res.sendFile(filename);
-                        return;
-                    }
-                }
+                var z = +req.params.z;
+                var x = +req.params.x;
+                var y = +req.params.y;
+                //console.log('%s: get tile %d, %d, %d', mbSource, z, x, y);
                 source.getTile(z, x, y, function (err, tile, headers) {
                     if (err) {
                         if (fallbackUri) {
@@ -152,13 +118,6 @@ var TileSource = (function () {
                     else {
                         res.set(headers);
                         res.send(tile);
-                        if (this.cacheFolder) {
-                            fs.writeFile(filename, tile, function (err) {
-                                if (err)
-                                    throw err;
-                                console.log('Saved map image to ' + filename);
-                            });
-                        }
                     }
                 });
             });

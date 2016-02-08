@@ -1,26 +1,24 @@
 {
-  "name": "csweb-tile",
-  "version": "0.0.2",
-  "description": "Wrapper around MapBox's TileLive application to offer a simple npm package for serving tile sources in csWeb.",
-  "main": "index.js",
-  "scripts": {
-    "test": "node test/app.js"
-  },
-  "keywords": [
-    "csweb",
-    "tilelive"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/TNOCS/csWeb-tile"
-  },
-  "author": "Erik Vullings <erik.vulllings@gmail.com>",
-  "license": "MIT",
-  "dependencies": {
-    "express": "^4.13.3",
-    "mkdirp": "^0.5.1",
-    "request": "^2.67.0",
-    "tilelive": "^5.11.0",
-    "tilelive-mapnik": "^0.6.17"
-  }
+    "name": "csweb-tile",
+    "version": "0.0.2",
+    "description": "Wrapper around MapBox's TileLive application to offer a simple npm package for serving tile sources in csWeb.",
+    "main": "index.js",
+    "scripts": {
+        "test": "node test/app.js"
+    },
+    "keywords": [
+        "csweb",
+        "tilelive"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/TNOCS/csWeb-tile"
+    },
+    "author": "Erik Vullings <erik.vulllings@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.13.3",
+        "tilelive": "^5.11.0",
+        "request": "^2.67.0"
+    }
 }

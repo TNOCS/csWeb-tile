@@ -41,6 +41,16 @@ cs.start(() => {
 });
 ```
 
+## Installing Mapnik
+NOTE: Windows binaries for the 3.x series require the Visual C++ Redistributable Packages for Visual Studio 2015:
+
+* https://mapbox.s3.amazonaws.com/windows-builds/visual-studio-runtimes/vcredist-VS2015/vcredist_x64.exe
+* https://mapbox.s3.amazonaws.com/windows-builds/visual-studio-runtimes/vcredist-VS2015/vcredist_x86.exe
+
+See https://github.com/mapnik/node-mapnik/wiki/WindowsBinaries for more details.
+
+
+
 ## 3D Cesium terrain server
 
 These tiles can also be used as base layer by the 3D view in csWeb based on Cesium. However, in order to use your own height server, you have to install another github project, the [Cesium Terrain Server](https://github.com/geo-data/cesium-terrain-server). In order to get this running, I had to jump through the following hoops:
