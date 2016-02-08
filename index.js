@@ -135,46 +135,56 @@ var TileSource = (function () {
                 if (_this.cacheFolder) {
                     dir = cachedTileFolder + "/" + z + "/" + x;
                     filename = dir + "/" + y + ".png";
-                    if (fs.existsSync(filename)) {
-                        // TODO make an async version by putting source.getTile in method.
-                        res.sendFile(filename);
-                        return;
-                    }
-                }
-                source.getTile(z, x, y, function (err, tile, headers) {
-                    if (err) {
-                        if (fallbackUri) {
-                            var ext = path.extname(req.url);
-                            var newUrl = fallbackUri + "/" + z + "/" + x + "/" + y + ext;
-                            request(newUrl).pipe(res);
+                    fs.exists(filename, function (exists) {
+                        if (exists) {
+                            res.sendFile(filename);
                         }
                         else {
-                            res.status(404);
-                            res.send(err.message);
-                            console.log('Error getting %s: tile %d, %d, %d', sourceFile, z, x, y);
-                            console.log(err.message);
+                            _this.getTile(source, req, res, fallbackUri, dir, filename, x, y, z);
                         }
-                    }
-                    else {
-                        if (_this.cacheFolder) {
-                            mkdirp(dir, function (err) {
-                                if (err) {
-                                    console.error("Error creating cache folder (" + dir + "): " + err);
-                                }
-                                else {
-                                    fs.writeFile(filename, tile, function (err) {
-                                        if (err)
-                                            throw err;
-                                        //console.log('Saved map image to ' + filename);
-                                    });
-                                }
+                    });
+                }
+                else {
+                    _this.getTile(source, req, res, fallbackUri, dir, filename, x, y, z);
+                }
+            });
+        });
+    };
+    /** Get a tile from mapnik */
+    TileSource.prototype.getTile = function (source, req, res, fallbackUri, dir, filename, x, y, z) {
+        var _this = this;
+        source.getTile(z, x, y, function (err, tile, headers) {
+            if (err) {
+                if (fallbackUri) {
+                    var ext = path.extname(req.url);
+                    var newUrl = fallbackUri + "/" + z + "/" + x + "/" + y + ext;
+                    request(newUrl).pipe(res);
+                }
+                else {
+                    res.status(404);
+                    res.send(err.message);
+                    // console.log('Error getting %s: tile %d, %d, %d', sourceFile, z, x, y);
+                    console.log(err.message);
+                }
+            }
+            else {
+                if (_this.cacheFolder) {
+                    mkdirp(dir, function (err) {
+                        if (err) {
+                            console.error("Error creating cache folder (" + dir + "): " + err);
+                        }
+                        else {
+                            fs.writeFile(filename, tile, function (err) {
+                                if (err)
+                                    throw err;
+                                //console.log('Saved map image to ' + filename);
                             });
                         }
-                        res.set(headers);
-                        res.send(tile);
-                    }
-                });
-            });
+                    });
+                }
+                res.set(headers);
+                res.send(tile);
+            }
         });
     };
     /**

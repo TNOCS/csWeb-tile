@@ -164,45 +164,52 @@ export class TileSource {
                 if (this.cacheFolder) {
                     dir = `${cachedTileFolder}/${z}/${x}`;
                     filename = `${dir}/${y}.png`;
-                    if (fs.existsSync(filename)) {
-                        // TODO make an async version by putting source.getTile in method.
-                        res.sendFile(filename);
-                        return;
-                    }
-                }
-
-                source.getTile(z, x, y, (err, tile, headers) => {
-                    if (err) {
-                        if (fallbackUri) {
-                            var ext = path.extname(req.url);
-                            var newUrl = `${fallbackUri}/${z}/${x}/${y}${ext}`;
-                            request(newUrl).pipe(res);
-                            // A redirect in the client does not work for Cesium: CORS exception
-                            // res.redirect(`${fallbackUri}/${z}/${x}/${y}${ext}`); // http://stackoverflow.com/questions/11355366/nodejs-redirect-url
+                    fs.exists(filename, exists => {
+                        if (exists) {
+                            res.sendFile(filename);
                         } else {
-                            res.status(404);
-                            res.send(err.message);
-                            console.log('Error getting %s: tile %d, %d, %d', sourceFile, z, x, y);
-                            console.log(err.message);
+                            this.getTile(source, req, res, fallbackUri, dir, filename, x, y, z);
                         }
-                    } else {
-                        if (this.cacheFolder) {
-                            mkdirp(dir, err => {
-                                if (err) {
-                                    console.error(`Error creating cache folder (${dir}): ${err}`);
-                                } else {
-                                    fs.writeFile(filename, tile, err => {
-                                        if (err) throw err;
-                                        //console.log('Saved map image to ' + filename);
-                                    });
-                                }
+                    });
+                } else {
+                    this.getTile(source, req, res, fallbackUri, dir, filename, x, y, z);
+                }
+            });
+        });
+    }
+
+    /** Get a tile from mapnik */
+    private getTile(source, req: express.Request, res: express.Response, fallbackUri: string, dir: string, filename: string, x: number, y: number, z: number) {
+        source.getTile(z, x, y, (err, tile, headers) => {
+            if (err) {
+                if (fallbackUri) {
+                    var ext = path.extname(req.url);
+                    var newUrl = `${fallbackUri}/${z}/${x}/${y}${ext}`;
+                    request(newUrl).pipe(res);
+                    // A redirect in the client does not work for Cesium: CORS exception
+                    // res.redirect(`${fallbackUri}/${z}/${x}/${y}${ext}`); // http://stackoverflow.com/questions/11355366/nodejs-redirect-url
+                } else {
+                    res.status(404);
+                    res.send(err.message);
+                    // console.log('Error getting %s: tile %d, %d, %d', sourceFile, z, x, y);
+                    console.log(err.message);
+                }
+            } else {
+                if (this.cacheFolder) {
+                    mkdirp(dir, err => {
+                        if (err) {
+                            console.error(`Error creating cache folder (${dir}): ${err}`);
+                        } else {
+                            fs.writeFile(filename, tile, err => {
+                                if (err) throw err;
+                                //console.log('Saved map image to ' + filename);
                             });
                         }
-                        res.set(headers);
-                        res.send(tile);
-                    }
-                });
-            });
+                    });
+                }
+                res.set(headers);
+                res.send(tile);
+            }
         });
     }
 

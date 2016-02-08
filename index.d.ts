@@ -41,6 +41,8 @@ export declare class TileSource {
      * @param  {string} sourceFolder? Optional source folder. If not specified, the file is absolute.
      */
     private load(protocol, file, fallbackUri, sourceFolder?);
+    /** Get a tile from mapnik */
+    private getTile(source, req, res, fallbackUri, dir, filename, x, y, z);
     /**
      * Check whether the cache is still valid, otherwise, delete it.
      *
