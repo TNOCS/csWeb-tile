@@ -2,6 +2,8 @@ var path = require('path');
 var fs = require('fs');
 var request = require('request');
 var mkdirp = require('mkdirp');
+var rmdir = require('rimraf');
+var md5 = require('md5');
 var tilelive = require('tilelive');
 /** Options */
 var TileSourceOptions = (function () {
@@ -123,11 +125,15 @@ var TileSource = (function () {
                     name = path.basename(file, '.mbtiles');
                     break;
             }
+            if (_this.cacheFolder) {
+                var cachedTileFolder = path.join(_this.cacheFolder, name);
+                _this.checkCache(cachedTileFolder, sourceFile);
+            }
             _this.app.get('/' + name + '/:z/:x/:y.*', function (req, res) {
                 var z = +req.params.z, x = +req.params.x, y = +req.params.y;
                 var dir, filename;
                 if (_this.cacheFolder) {
-                    dir = _this.cacheFolder + "/" + name + "/" + z + "/" + x;
+                    dir = cachedTileFolder + "/" + z + "/" + x;
                     filename = dir + "/" + y + ".png";
                     if (fs.existsSync(filename)) {
                         // TODO make an async version by putting source.getTile in method.
@@ -167,6 +173,38 @@ var TileSource = (function () {
                         res.set(headers);
                         res.send(tile);
                     }
+                });
+            });
+        });
+    };
+    /**
+     * Check whether the cache is still valid, otherwise, delete it.
+     *
+     * We compute the hash of the style file and if it doesn't exist, we clear the cache and write it to file as [hash].md5.
+     * If the file exists, it means that we are dealing with the same source file, and we don't need to do anything.
+    */
+    TileSource.prototype.checkCache = function (cacheFolder, sourceFile) {
+        fs.readFile(sourceFile, function (err, buf) {
+            var hash = md5(buf);
+            console.log('MD5 hash: ' + hash);
+            var md5file = path.join(cacheFolder, hash + '.md5');
+            fs.exists(md5file, function (exists) {
+                if (exists)
+                    return;
+                rmdir(cacheFolder, function (err) {
+                    if (err)
+                        console.error('Error deleting cache: ' + err.message);
+                    mkdirp(cacheFolder, function (err) {
+                        if (err) {
+                            console.error("Error creating cache folder (" + cacheFolder + "): " + err.message);
+                        }
+                        else {
+                            fs.writeFile(md5file, '', function (err) {
+                                if (err)
+                                    console.error('Error writing hash: ' + err.message);
+                            });
+                        }
+                    });
                 });
             });
         });

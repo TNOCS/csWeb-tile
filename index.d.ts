@@ -41,4 +41,11 @@ export declare class TileSource {
      * @param  {string} sourceFolder? Optional source folder. If not specified, the file is absolute.
      */
     private load(protocol, file, fallbackUri, sourceFolder?);
+    /**
+     * Check whether the cache is still valid, otherwise, delete it.
+     *
+     * We compute the hash of the style file and if it doesn't exist, we clear the cache and write it to file as [hash].md5.
+     * If the file exists, it means that we are dealing with the same source file, and we don't need to do anything.
+    */
+    private checkCache(cacheFolder, sourceFile);
 }

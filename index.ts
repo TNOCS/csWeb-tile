@@ -4,7 +4,9 @@ import fs      = require('fs');
 import express = require('express');
 import request = require('request');
 import mkdirp  = require('mkdirp');
+import rmdir   = require('rimraf');
 
+var md5      = require('md5');
 var tilelive = require('tilelive');
 
 // Iterate over all sub-folders in sources.
@@ -130,6 +132,7 @@ export class TileSource {
         this.registerProtocol(protocol);
         // var re = new RegExp('/[a-zA-Z\d]*\/(?<z>\d+)\/(?<x>\d+)\/(?<y>\d+)\./');
         let sourceFile = sourceFolder ? path.join(sourceFolder, file) : file;
+
         tilelive.load(`${protocol}://` + sourceFile, (err, source) => {
             console.log(`Loading ${protocol}: ${sourceFile}`);
             if (err) {
@@ -144,6 +147,12 @@ export class TileSource {
                     name = path.basename(file, '.mbtiles');
                     break;
             }
+
+            if (this.cacheFolder) {
+                var cachedTileFolder = path.join(this.cacheFolder, name);
+                this.checkCache(cachedTileFolder, sourceFile);
+            }
+
             this.app.get('/' + name + '/:z/:x/:y.*', (req, res) => {
                 var z = +req.params.z,
                     x = +req.params.x,
@@ -153,7 +162,7 @@ export class TileSource {
                     filename: string;
 
                 if (this.cacheFolder) {
-                    dir = `${this.cacheFolder}/${name}/${z}/${x}`;
+                    dir = `${cachedTileFolder}/${z}/${x}`;
                     filename = `${dir}/${y}.png`;
                     if (fs.existsSync(filename)) {
                         // TODO make an async version by putting source.getTile in method.
@@ -192,6 +201,35 @@ export class TileSource {
                         res.set(headers);
                         res.send(tile);
                     }
+                });
+            });
+        });
+    }
+
+    /** 
+     * Check whether the cache is still valid, otherwise, delete it. 
+     * 
+     * We compute the hash of the style file and if it doesn't exist, we clear the cache and write it to file as [hash].md5. 
+     * If the file exists, it means that we are dealing with the same source file, and we don't need to do anything.
+    */
+    private checkCache(cacheFolder: string, sourceFile: string) {
+        fs.readFile(sourceFile, (err, buf) => {
+            let hash = md5(buf);
+            console.log('MD5 hash: ' + hash);
+            var md5file = path.join(cacheFolder, hash + '.md5');
+            fs.exists(md5file, exists => {
+                if (exists) return;
+                rmdir(cacheFolder, err => {
+                    if (err) console.error('Error deleting cache: ' + err.message);
+                    mkdirp(cacheFolder, err => {
+                        if (err) {
+                            console.error(`Error creating cache folder (${cacheFolder}): ${err.message}`);
+                        } else {
+                            fs.writeFile(md5file, '', err => {
+                                if (err) console.error('Error writing hash: ' + err.message);
+                            });
+                        }
+                    });
                 });
             });
         });

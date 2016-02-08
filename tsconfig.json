@@ -16,6 +16,7 @@
         "typings/express/express.d.ts",
         "typings/request/request.d.ts",
         "typings/mkdirp/mkdirp.d.ts",
+        "typings/rimraf/rimraf.d.ts",
         "test/app.ts",
         "index.ts"
     ]
