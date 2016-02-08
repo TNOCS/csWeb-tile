@@ -20,8 +20,10 @@
     "express": "^4.13.3",
     "mapnik": "^3.4.16",
     "mbtiles": "^0.8.2",
+    "md5": "^2.0.0",
     "mkdirp": "^0.5.1",
     "request": "^2.67.0",
+    "rimraf": "^2.5.1",
     "tilelive": "^5.11.0",
     "tilelive-mapnik": "^0.6.17"
   }
