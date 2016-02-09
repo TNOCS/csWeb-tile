@@ -10,13 +10,13 @@
         "noLib": false,
         "sourceMap": true
     },
-    "exclude": [],
     "files": [
         "typings/node/node.d.ts",
         "typings/express/express.d.ts",
         "typings/request/request.d.ts",
         "typings/mkdirp/mkdirp.d.ts",
         "typings/rimraf/rimraf.d.ts",
+        "typings/async/async.d.ts",
         "test/app.ts",
         "index.ts"
     ]
