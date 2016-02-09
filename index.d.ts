@@ -38,9 +38,10 @@ export declare class TileSource {
      * @param  {string} protocol
      * @param  {string} file
      * @param  {string} fallbackUri If specified, used to redirect clients when a lookup fails
-     * @param  {string} sourceFolder? Optional source folder. If not specified, the file is absolute.
+     * @param  {string} sourceFolder Source folder. If not specified, the file is absolute.
+     * @param  {Function} callback Callback function to call the function asynchronously.
      */
-    private load(protocol, file, fallbackUri, sourceFolder?);
+    private load(protocol, file, fallbackUri, sourceFolder, callback);
     /** Get a tile from mapnik */
     private getTile(source, req, res, fallbackUri, dir, filename, x, y, z);
     /**

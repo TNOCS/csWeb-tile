@@ -5,6 +5,7 @@ import express = require('express');
 import request = require('request');
 import mkdirp  = require('mkdirp');
 import rmdir   = require('rimraf');
+import async   = require('async');
 
 var md5      = require('md5');
 var tilelive = require('tilelive');
@@ -66,7 +67,7 @@ export class TileSource {
         if (options.tileSources) {
             // Source files are explicitly stated
             options.tileSources.forEach(source => {
-                this.load(source.protocol, source.path, source.fallbackUri, this.pathIsAbsolute(source.path) ? '' : __dirname);
+                this.load(source.protocol, source.path, source.fallbackUri, this.pathIsAbsolute(source.path) ? '' : __dirname, () => {});
             });
         } else {
             // Folder that contains the source map files.
@@ -88,7 +89,13 @@ export class TileSource {
                             console.log(`Error reading folder ${protocol}: ${err}`);
                             return;
                         }
-                        files.forEach(file => this.load(protocol, file, '', sourceFolder));
+                        var tasks: AsyncFunction<void>[] = [];
+                        files.forEach(file => {
+                            tasks.push((cb: Function) => {
+                                this.load(protocol, file, '', sourceFolder, cb);
+                            });
+                        });
+                        async.series<void>(tasks);
                     });
                 });
             });
@@ -126,9 +133,10 @@ export class TileSource {
      * @param  {string} protocol
      * @param  {string} file
      * @param  {string} fallbackUri If specified, used to redirect clients when a lookup fails
-     * @param  {string} sourceFolder? Optional source folder. If not specified, the file is absolute.
+     * @param  {string} sourceFolder Source folder. If not specified, the file is absolute.
+     * @param  {Function} callback Callback function to call the function asynchronously.
      */
-    private load(protocol: string, file: string, fallbackUri: string, sourceFolder?: string) {
+    private load(protocol: string, file: string, fallbackUri: string, sourceFolder: string, callback: Function) {
         this.registerProtocol(protocol);
         // var re = new RegExp('/[a-zA-Z\d]*\/(?<z>\d+)\/(?<x>\d+)\/(?<y>\d+)\./');
         let sourceFile = sourceFolder ? path.join(sourceFolder, file) : file;
@@ -175,6 +183,7 @@ export class TileSource {
                     this.getTile(source, req, res, fallbackUri, dir, filename, x, y, z);
                 }
             });
+            callback();
         });
     }
 

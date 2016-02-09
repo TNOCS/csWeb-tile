@@ -3,6 +3,7 @@ var fs = require('fs');
 var request = require('request');
 var mkdirp = require('mkdirp');
 var rmdir = require('rimraf');
+var async = require('async');
 var md5 = require('md5');
 var tilelive = require('tilelive');
 /** Options */
@@ -47,7 +48,7 @@ var TileSource = (function () {
         if (options.tileSources) {
             // Source files are explicitly stated
             options.tileSources.forEach(function (source) {
-                _this.load(source.protocol, source.path, source.fallbackUri, _this.pathIsAbsolute(source.path) ? '' : __dirname);
+                _this.load(source.protocol, source.path, source.fallbackUri, _this.pathIsAbsolute(source.path) ? '' : __dirname, function () { });
             });
         }
         else {
@@ -69,7 +70,13 @@ var TileSource = (function () {
                             console.log("Error reading folder " + protocol + ": " + err);
                             return;
                         }
-                        files.forEach(function (file) { return _this.load(protocol, file, '', sourceFolder); });
+                        var tasks = [];
+                        files.forEach(function (file) {
+                            tasks.push(function (cb) {
+                                _this.load(protocol, file, '', sourceFolder, cb);
+                            });
+                        });
+                        async.series(tasks);
                     });
                 });
             });
@@ -104,9 +111,10 @@ var TileSource = (function () {
      * @param  {string} protocol
      * @param  {string} file
      * @param  {string} fallbackUri If specified, used to redirect clients when a lookup fails
-     * @param  {string} sourceFolder? Optional source folder. If not specified, the file is absolute.
+     * @param  {string} sourceFolder Source folder. If not specified, the file is absolute.
+     * @param  {Function} callback Callback function to call the function asynchronously.
      */
-    TileSource.prototype.load = function (protocol, file, fallbackUri, sourceFolder) {
+    TileSource.prototype.load = function (protocol, file, fallbackUri, sourceFolder, callback) {
         var _this = this;
         this.registerProtocol(protocol);
         // var re = new RegExp('/[a-zA-Z\d]*\/(?<z>\d+)\/(?<x>\d+)\/(?<y>\d+)\./');
@@ -148,6 +156,7 @@ var TileSource = (function () {
                     _this.getTile(source, req, res, fallbackUri, dir, filename, x, y, z);
                 }
             });
+            callback();
         });
     };
     /** Get a tile from mapnik */
