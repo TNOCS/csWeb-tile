@@ -17,6 +17,7 @@
   "author": "Erik Vullings <erik.vulllings@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "async": "^1.5.2",
     "express": "^4.13.3",
     "mapnik": "^3.4.16",
     "mbtiles": "^0.8.2",
