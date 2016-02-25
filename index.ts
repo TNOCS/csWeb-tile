@@ -38,7 +38,7 @@ export class TileSourceOptions {
     /** Specify a source manually by setting its path. If set, ignores 'sources' folder. */
     tileSources: ITileSource[];
     /** Path to the cache folder, if any. */
-    cache: string = path.join(__dirname, 'cache');
+    cache: string = ''; //path.join(__dirname, 'cache');
 };
 
 export class TileSource {
@@ -93,6 +93,16 @@ export class TileSource {
                         }
                         var tasks: AsyncFunction<void>[] = [];
                         files.forEach(file => {
+                            switch(protocol) {
+                                case 'tm2':
+                                case 'mbtiles':
+                                // case 'mapnik':
+                                // case 'carto+file':
+                                    tasks.push((cb: Function) => {
+                                        this.load('utfgrid+' + protocol, file, '', sourceFolder, cb);
+                                    });
+                                    break;
+                            }
                             tasks.push((cb: Function) => {
                                 this.load(protocol, file, '', sourceFolder, cb);
                             });
@@ -109,16 +119,27 @@ export class TileSource {
     private registerProtocol(protocol: string) {
         if (this.protocols.indexOf(protocol) >= 0) return;
         this.protocols.push(protocol);
+        if (/utfgrid/.test(protocol)) {
+            if (this.protocols.indexOf('utfgrid') < 0) {
+                this.protocols.push('utfgrid');
+                require('tilelive-vector'  ).registerProtocols(tilelive);
+                require('tilelive-bridge'  ).registerProtocols(tilelive);
+                require('tilelive-utfgrid' )(tilelive).registerProtocols(tilelive);
+                require('tilelive-tmsource')(tilelive).registerProtocols(tilelive);
+            }
+            console.log(`Registering protocol ${protocol}.`);
+            this.registerProtocol(protocol.replace('utfgrid+', ''));
+            return;
+        }
         switch (protocol) {
             case 'mapnik':
                 require('tilelive-mapnik').registerProtocols(tilelive);
                 break;
             case 'tm2':
-                require('tilelive-vector'  ).registerProtocols(tilelive);
-                require('tilelive-bridge'  ).registerProtocols(tilelive);
-                require('tilelive-utfgrid' )(tilelive).registerProtocols(tilelive);
-                require('tilelive-tmsource')(tilelive).registerProtocols(tilelive);
                 require('tilelive-tmstyle' )(tilelive).registerProtocols(tilelive);
+                break;
+            case 'mbtiles':
+                require('mbtiles').registerProtocols(tilelive);
                 break;
             default:
                 require(protocol).registerProtocols(tilelive);
@@ -150,31 +171,39 @@ export class TileSource {
         // var re = new RegExp('/[a-zA-Z\d]*\/(?<z>\d+)\/(?<x>\d+)\/(?<y>\d+)\./');
         let sourceFile = sourceFolder ? path.join(sourceFolder, file) : file;
 
-        var tileliveProtocol = protocol;
+        var tileliveSource: string;
         switch (protocol) {
             case 'tm2':
-                tileliveProtocol = 'utfgrid+tmstyle:///dev/web/cs/csWeb-tile/tilesources/tm2/road.tm2';
-                sourceFile = '';
+                // NOTE I need to remove the drive (host) name, otherwise tmstyle cannot load the data.yml file.
+                tileliveSource = `tmstyle://${sourceFile.replace(/(.:)/i, '')}`;
+                break;
+            case 'utfgrid+tm2':
+                // NOTE I need to remove the drive (host) name, otherwise tmstyle cannot load the data.yml file.
+                tileliveSource = `utfgrid+tmstyle://${sourceFile.replace(/(.:)/i, '')}`;
                 break;
             default:
-                tileliveProtocol += '://';
+                tileliveSource = `${protocol}://${sourceFile}`;
                 break;
         }
 
-        tilelive.load(`${tileliveProtocol}` + sourceFile, (err, source) => {
-            console.log(__dirname);
-            console.log(`Loading ${tileliveProtocol}${sourceFile}`);
+        var isUtfGrid = /^utfgrid/.test(protocol);
+
+        tilelive.load(tileliveSource, (err, source) => {
+            // console.log(`Loading ${tileliveSource}`);
             if (err) {
                 throw err;
             }
             let name: string;
             switch (protocol) {
+                case 'utfgrid+mapnik':
                 case 'mapnik':
                     name = path.basename(file, '.xml');
                     break;
+                case 'utfgrid+tm2':
                 case 'tm2':
                     name = path.basename(file, '.tm2');
                     break;
+                case 'utfgrid+mbtiles':
                 case 'mbtiles':
                     name = path.basename(file, '.mbtiles');
                     break;
@@ -185,8 +214,13 @@ export class TileSource {
                 this.checkCache(cachedTileFolder, sourceFile);
             }
 
-            this.app.get('/' + name + '/:z/:x/:y.*', (req, res) => {
-                var z = +req.params.z,
+            var ext = isUtfGrid ? 'grid.json' : 'png';
+
+            var urlPath = `/${name}/:z/:x/:y.${ext}`;
+            console.log(`Exposing ${tileliveSource} service at ${urlPath}.`);
+
+            this.app.get(urlPath, (req, res) => {
+                let z = +req.params.z,
                     x = +req.params.x,
                     y = +req.params.y;
 
@@ -195,7 +229,7 @@ export class TileSource {
 
                 if (this.cacheFolder) {
                     dir = `${cachedTileFolder}/${z}/${x}`;
-                    filename = `${dir}/${y}.png`;
+                    filename = `${dir}/${y}.${ext}`;
                     fs.exists(filename, exists => {
                         if (exists) {
                             res.sendFile(filename);
