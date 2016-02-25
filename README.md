@@ -1,18 +1,35 @@
 # csWeb-tile
-Wrapper around [MapBox's TileLive](https://github.com/mapbox/tilelive) application to offer a simple npm package for serving tile sources in csWeb.
+Wrapper around [MapBox's TileLive](https://github.com/mapbox/tilelive) application to offer a simple npm package for serving tile sources in csWeb. You can run it standalone, as part of the csWeb server, or any other express-based server for that matter. In case you wish to serve tiles standalone, you may also take a look at [tessera](https://github.com/mojodna/tessera), a standalone tile server created by mojodna, who also made most of the tilelive modules. 
+
+Currently, the following tilelive protocols are supported:
+* mbtiles (with raster data, not with vector tlies). Default location: ```tilesources\mbtiles```.
+* tmstyle (or .tm2) projects, i.e. [Mapbox Studio Classic](https://www.mapbox.com/mapbox-studio-classic/#win64) tilemill 2 projects. You can create them using the free Mapbox Studio Classic tool. Default location ```tilesources\tm2```. Currently only tested with geojson source layers. For tmstyle projects, we can also serve UtfGrid files - in that case, you need to edit the project.yml file manually to add the interactivity layer, as explained [here](https://www.mapbox.com/help/style-quickstart/#utfgrid).
+* Mapnik XML projects, e.g. you can create your own map using [TileMill](https://www.mapbox.com/tilemill/), and export it as a Mapnik project. Default location: ```tilelive\mapnik```.
+
+NOTE: Tests are performed using node 5 and npm 3 on Windows: in principle, everything should also work on Mac and Linux, but as I don't have access to these platforms, I cannot test it.
 
 ## Usage
 
-For example, if you want to share mbtiles files, do the following.
+For example, if you want to share mbtiles files (with raster data), do the following.
 
+### Simple standalone tile server
+
+* Create a new project folder, ```csWeb-tile``` for example and ```cd csWeb-tile```.
+* Create a folder ```tilesources\mbtiles```
+* Put your mbtiles file in the newly created ```tilesources\mbtiles``` folder
+* Run ```node csWeb-tile```
+
+### In [csWeb](https://github.com/TNOCS/csWeb)
+
+Assuming that you have installed TypeScript (otherwise, run ```npm i -g typescript```), you can do the following:
 * Download the zip file from [csWeb-example](https://github.com/TNOCS/csWeb-example) and unpack it in a new folder.
 * Install all regular dependencies in this new project, install csweb-tile including the mbtiles protocal package, and compile the source:
 ```
 npm i
-npm i csweb-tile mbtiles --s
+npm i csweb-tile mbtiles --save
 cd public && bower i
 cd ..
-tsc -w -p .
+tsc
 ```
 * Add the mbtiles file(s) to a folder, e.g. ```tilesources/mbtiles```. Note that you can change 
 the ```tilesources``` name, but the subfolder's name needs to be the same as the tilelive protocol, 
