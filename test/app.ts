@@ -1,6 +1,5 @@
 import http       = require('http');
 import path       = require('path');
-import fs         = require('fs');
 import express    = require('express');
 import TileSource = require('../index');
 

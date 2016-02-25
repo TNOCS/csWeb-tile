@@ -5,26 +5,18 @@ var mkdirp = require('mkdirp');
 var rmdir = require('rimraf');
 var async = require('async');
 var md5 = require('md5'), tilelive = require('tilelive');
-/** Options */
-var TileSourceOptions = (function () {
-    function TileSourceOptions() {
-        /** If true, set headers to enable CORRS. */
-        this.corrs = true;
-        /** source folder. If not set, uses ./sources */
-        this.sources = path.join(__dirname, 'tilesources');
-        /** Path to the cache folder, if any. */
-        this.cache = ''; //path.join(__dirname, 'cache');
-    }
-    return TileSourceOptions;
-})();
-exports.TileSourceOptions = TileSourceOptions;
 ;
 var TileSource = (function () {
     function TileSource(app, options) {
         var _this = this;
         this.app = app;
         this.protocols = [];
-        var defaultOptions = new TileSourceOptions();
+        var defaultOptions = {
+            corrs: true,
+            sources: path.join(__dirname, 'tilesources'),
+            tileSources: [],
+            cache: path.join(__dirname, 'cache')
+        };
         if (!options)
             options = defaultOptions;
         // enable corrs

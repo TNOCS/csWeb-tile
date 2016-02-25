@@ -1,10 +1,13 @@
 {
   "name": "csweb-tile",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Wrapper around MapBox's TileLive application to offer a simple npm package for serving tile sources in csWeb.",
   "main": "index.js",
   "scripts": {
     "test": "node test/app.js"
+  },
+  "bin": {
+      "csWeb-tile": "test/run.js"
   },
   "keywords": [
     "csweb",

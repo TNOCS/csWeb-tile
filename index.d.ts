@@ -9,20 +9,20 @@ export interface ITileSource {
     fallbackUri: string;
 }
 /** Options */
-export declare class TileSourceOptions {
+export interface ITileSourceOptions {
     /** If true, set headers to enable CORRS. */
-    corrs: boolean;
+    corrs?: boolean;
     /** source folder. If not set, uses ./sources */
-    sources: string;
+    sources?: string;
     /** Specify a source manually by setting its path. If set, ignores 'sources' folder. */
-    tileSources: ITileSource[];
+    tileSources?: ITileSource[];
     /** Path to the cache folder, if any. */
-    cache: string;
+    cache?: string;
 }
 export declare class TileSource {
     private app;
     cacheFolder: string;
-    constructor(app: express.Express, options?: TileSourceOptions);
+    constructor(app: express.Express, options?: ITileSourceOptions);
     private protocols;
     /** Register the protocol. */
     private registerProtocol(protocol);

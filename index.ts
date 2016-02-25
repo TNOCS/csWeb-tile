@@ -30,22 +30,27 @@ export interface ITileSource {
 }
 
 /** Options */
-export class TileSourceOptions {
+export interface ITileSourceOptions {
     /** If true, set headers to enable CORRS. */
-    corrs: boolean = true;
+    corrs?: boolean;
     /** source folder. If not set, uses ./sources */
-    sources: string = path.join(__dirname, 'tilesources');
+    sources?: string;
     /** Specify a source manually by setting its path. If set, ignores 'sources' folder. */
-    tileSources: ITileSource[];
+    tileSources?: ITileSource[];
     /** Path to the cache folder, if any. */
-    cache: string = ''; //path.join(__dirname, 'cache');
+    cache?: string;
 };
 
 export class TileSource {
     cacheFolder: string;
 
-    constructor(private app: express.Express, options?: TileSourceOptions) {
-        var defaultOptions = new TileSourceOptions();
+    constructor(private app: express.Express, options?: ITileSourceOptions) {
+        var defaultOptions = <ITileSourceOptions> {
+            corrs: true,
+            sources: path.join(__dirname, 'tilesources'),
+            tileSources: [],
+            cache: path.join(__dirname, 'cache')
+        };
         if (!options) options = defaultOptions;
 
         // enable corrs
