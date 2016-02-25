@@ -4,8 +4,7 @@ var request = require('request');
 var mkdirp = require('mkdirp');
 var rmdir = require('rimraf');
 var async = require('async');
-var md5 = require('md5');
-var tilelive = require('tilelive');
+var md5 = require('md5'), tilelive = require('tilelive');
 /** Options */
 var TileSourceOptions = (function () {
     function TileSourceOptions() {
@@ -91,6 +90,13 @@ var TileSource = (function () {
             case 'mapnik':
                 require('tilelive-mapnik').registerProtocols(tilelive);
                 break;
+            case 'tm2':
+                require('tilelive-vector').registerProtocols(tilelive);
+                require('tilelive-bridge').registerProtocols(tilelive);
+                require('tilelive-utfgrid')(tilelive).registerProtocols(tilelive);
+                require('tilelive-tmsource')(tilelive).registerProtocols(tilelive);
+                require('tilelive-tmstyle')(tilelive).registerProtocols(tilelive);
+                break;
             default:
                 require(protocol).registerProtocols(tilelive);
                 break;
@@ -119,8 +125,19 @@ var TileSource = (function () {
         this.registerProtocol(protocol);
         // var re = new RegExp('/[a-zA-Z\d]*\/(?<z>\d+)\/(?<x>\d+)\/(?<y>\d+)\./');
         var sourceFile = sourceFolder ? path.join(sourceFolder, file) : file;
-        tilelive.load((protocol + "://") + sourceFile, function (err, source) {
-            console.log("Loading " + protocol + ": " + sourceFile);
+        var tileliveProtocol = protocol;
+        switch (protocol) {
+            case 'tm2':
+                tileliveProtocol = 'utfgrid+tmstyle:///dev/web/cs/csWeb-tile/tilesources/tm2/road.tm2';
+                sourceFile = '';
+                break;
+            default:
+                tileliveProtocol += '://';
+                break;
+        }
+        tilelive.load(("" + tileliveProtocol) + sourceFile, function (err, source) {
+            console.log(__dirname);
+            console.log("Loading " + tileliveProtocol + sourceFile);
             if (err) {
                 throw err;
             }
@@ -128,6 +145,9 @@ var TileSource = (function () {
             switch (protocol) {
                 case 'mapnik':
                     name = path.basename(file, '.xml');
+                    break;
+                case 'tm2':
+                    name = path.basename(file, '.tm2');
                     break;
                 case 'mbtiles':
                     name = path.basename(file, '.mbtiles');

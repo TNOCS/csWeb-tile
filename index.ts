@@ -7,8 +7,10 @@ import mkdirp  = require('mkdirp');
 import rmdir   = require('rimraf');
 import async   = require('async');
 
-var md5      = require('md5');
-var tilelive = require('tilelive');
+var md5      = require('md5'),
+    tilelive = require('tilelive');
+
+//require('tilelive-bridge').registerProtocols(tilelive);
 
 // Iterate over all sub-folders in sources.
 // Each sub-folder's name needs to match the tilelive module name,
@@ -111,6 +113,13 @@ export class TileSource {
             case 'mapnik':
                 require('tilelive-mapnik').registerProtocols(tilelive);
                 break;
+            case 'tm2':
+                require('tilelive-vector'  ).registerProtocols(tilelive);
+                require('tilelive-bridge'  ).registerProtocols(tilelive);
+                require('tilelive-utfgrid' )(tilelive).registerProtocols(tilelive);
+                require('tilelive-tmsource')(tilelive).registerProtocols(tilelive);
+                require('tilelive-tmstyle' )(tilelive).registerProtocols(tilelive);
+                break;
             default:
                 require(protocol).registerProtocols(tilelive);
                 break;
@@ -141,8 +150,20 @@ export class TileSource {
         // var re = new RegExp('/[a-zA-Z\d]*\/(?<z>\d+)\/(?<x>\d+)\/(?<y>\d+)\./');
         let sourceFile = sourceFolder ? path.join(sourceFolder, file) : file;
 
-        tilelive.load(`${protocol}://` + sourceFile, (err, source) => {
-            console.log(`Loading ${protocol}: ${sourceFile}`);
+        var tileliveProtocol = protocol;
+        switch (protocol) {
+            case 'tm2':
+                tileliveProtocol = 'utfgrid+tmstyle:///dev/web/cs/csWeb-tile/tilesources/tm2/road.tm2';
+                sourceFile = '';
+                break;
+            default:
+                tileliveProtocol += '://';
+                break;
+        }
+
+        tilelive.load(`${tileliveProtocol}` + sourceFile, (err, source) => {
+            console.log(__dirname);
+            console.log(`Loading ${tileliveProtocol}${sourceFile}`);
             if (err) {
                 throw err;
             }
@@ -150,6 +171,9 @@ export class TileSource {
             switch (protocol) {
                 case 'mapnik':
                     name = path.basename(file, '.xml');
+                    break;
+                case 'tm2':
+                    name = path.basename(file, '.tm2');
                     break;
                 case 'mbtiles':
                     name = path.basename(file, '.mbtiles');
