@@ -1,5 +1,5 @@
 # csWeb-tile
-Wrapper around [MapBox's TileLive](https://github.com/mapbox/tilelive) application to offer a simple npm package for serving tile sources in csWeb. You can run it standalone, as part of the csWeb server, or any other express-based server for that matter. In case you wish to serve tiles standalone, you may also take a look at [tessera](https://github.com/mojodna/tessera), a standalone tile server created by mojodna, who also made most of the tilelive modules. 
+Wrapper around [MapBox's TileLive](https://github.com/mapbox/tilelive) application to offer a simple npm package for serving tile sources. You can run it standalone, as part of the csWeb server, or any other express-based server for that matter. In case you wish to serve tiles standalone, you may also take a look at [tessera](https://github.com/mojodna/tessera), a standalone tile server created by mojodna, who also made most of the tilelive modules. 
 
 Currently, the following tilelive protocols are supported:
 * mbtiles (with raster data, not with vector tlies). Default location: ```tilesources\mbtiles```.

@@ -71,7 +71,7 @@ export class TileSource {
             }
         }
 
-        if (options.tileSources) {
+        if (options.tileSources && options.tileSources.length > 0) {
             // Source files are explicitly stated
             options.tileSources.forEach(source => {
                 this.load(source.protocol, source.path, source.fallbackUri, this.pathIsAbsolute(source.path) ? '' : __dirname, () => {});
@@ -98,7 +98,7 @@ export class TileSource {
                         }
                         var tasks: AsyncFunction<void>[] = [];
                         files.forEach(file => {
-                            switch(protocol) {
+                            switch (protocol) {
                                 case 'tm2':
                                 case 'mbtiles':
                                 // case 'mapnik':
@@ -272,7 +272,7 @@ export class TileSource {
                         if (err) {
                             console.error(`Error creating cache folder (${dir}): ${err}`);
                         } else {
-                            fs.writeFile(filename, tile, err => {
+                            fs.writeFile(filename, headers['Content-Type'] === 'application/json' ? JSON.stringify(tile) : tile, err => {
                                 if (err) throw err;
                                 //console.log('Saved map image to ' + filename);
                             });

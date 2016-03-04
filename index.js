@@ -36,7 +36,7 @@ var TileSource = (function () {
                 });
             }
         }
-        if (options.tileSources) {
+        if (options.tileSources && options.tileSources.length > 0) {
             // Source files are explicitly stated
             options.tileSources.forEach(function (source) {
                 _this.load(source.protocol, source.path, source.fallbackUri, _this.pathIsAbsolute(source.path) ? '' : __dirname, function () { });
@@ -226,7 +226,7 @@ var TileSource = (function () {
                             console.error("Error creating cache folder (" + dir + "): " + err);
                         }
                         else {
-                            fs.writeFile(filename, tile, function (err) {
+                            fs.writeFile(filename, headers['Content-Type'] === 'application/json' ? JSON.stringify(tile) : tile, function (err) {
                                 if (err)
                                     throw err;
                                 //console.log('Saved map image to ' + filename);

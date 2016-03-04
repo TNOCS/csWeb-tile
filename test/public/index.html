@@ -1,45 +1,80 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="Content-Script-Type" content="text/javascript" />
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6/leaflet.css" />
-	<script src="http://cdn.leafletjs.com/leaflet-0.6/leaflet.js" type="text/javascript"></script>
-	<style type="text/css">
-		html, body {height: 100%;overflow: hidden;}
-		#map {height: 100%;}
-	</style>
-	<title>test map</title>
-	<style type="text/css">
-		#map {
-			width: 100%;
-			height: 98vh;
-		}
-	</style>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <link rel="stylesheet" href="js/leaflet.css" />
+    <script src="js/leaflet.js" type="text/javascript"></script>
+    <script src="js/leaflet.utfgrid.js" type="text/javascript"></script>
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        #map {
+            height: 100%;
+        }
+    </style>
+    <title>test map</title>
+    <style type="text/css">
+        #map {
+            width: 100%;
+            height: 98vh;
+        }
+    </style>
 </head>
 
 <body>
-	<div id="map"></div>
-	<script type="text/javascript">
+    <div id="map"></div>
+    <script type="text/javascript">
         var map = new L.Map('map', {
     	   center: [52.3773, 4.8889],
 	   	   zoom: 8
         });
         
-       	L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
-    		attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+       	// L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+    	// 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+	    // }).addTo(map);
+
+       	L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+    		attribution: 'Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
 	    }).addTo(map);
 	
         function bicycleTest() {
-           	L.tileLayer('http://localhost:8888/mainroad/{z}/{x}/{y}.png').addTo(map);
+           	L.tileLayer('mainroad/{z}/{x}/{y}.png').addTo(map);
         }
     
         function bicycleTest2() {
-           	L.tileLayer('http://localhost:8888/mainroad2/{z}/{x}/{y}.png').addTo(map);
+           	L.tileLayer('mainroad2/{z}/{x}/{y}.png').addTo(map);
         }
     
         function bicycleTest3() {
-           	L.tileLayer('http://localhost:8888/road/{z}/{x}/{y}.png').addTo(map);
+           	L.tileLayer('road/{z}/{x}/{y}.png').addTo(map);
+            var utfGrid = new L.UtfGrid('road/{z}/{x}/{y}.grid.json', { //.grid.json?callback={cb}
+                resolution: 4,
+                useJsonP: false
+            });
+            utfGrid.on('click', function (e) {
+                //click events are fired with e.data==null if an area with no hit is clicked
+                if (e.data) {
+                    alert('click: ' + JSON.stringify(e.data, null, 2));
+                } else {
+                    alert('click: nothing');
+                }
+            });
+            utfGrid.on('mouseover', function (e) {
+                console.log('hover: ' + JSON.stringify(e.data, null, 2));
+            });
+            utfGrid.on('mousemove', function (e) {
+                console.log('move: ' + JSON.stringify(e.data, null, 2));
+            });
+            utfGrid.on('mouseout', function (e) {
+                console.log('unhover: ' + JSON.stringify(e.data, null, 2));
+            });
+            map.addLayer(utfGrid); 
         }
     
 		function testKidal() {
@@ -52,8 +87,8 @@
 			}).addTo(map);
 		}
         
-        bicycleTest3        ();
-	</script>
+        bicycleTest3();
+    </script>
 </body>
 
 </html>
