@@ -1,0 +1,643 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22689,
+				"LENGTH": 15,
+				"LINK_ID": "81306",
+				"FCLASS": 18,
+				"FeatureTypeId": "link",
+				"avgVwrk": 25,
+				"avgVwkd": 21,
+				"EtmIwrk": 5,
+				"EtmIwkd": 3,
+				"NAME": "Buiksloterdijk"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90327040035590578,52.4035756053192117],
+								[4.90327979966727323,52.4034386053142711]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22690,
+				"LENGTH": 11,
+				"LINK_ID": "81307",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 23,
+				"avgVwkd": 23,
+				"EtmIwrk": 2,
+				"EtmIwkd": 2,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90900597899545676,52.4006722051770879],
+								[4.90916957873750004,52.4006607051755822]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22691,
+				"LENGTH": 10,
+				"LINK_ID": "81308",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 19,
+				"avgVwkd": 23,
+				"EtmIwrk": 1,
+				"EtmIwkd": 2,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90889157938850484,52.4007243051796863],
+								[4.90900597899545676,52.4006722051770879]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22692,
+				"LENGTH": 187,
+				"LINK_ID": "81309",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 22,
+				"avgVwkd": 21,
+				"EtmIwrk": 11,
+				"EtmIwkd": 7,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90617968774443636,52.4017517052342541],
+								[4.90851068052698558,52.4008623051870899]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22693,
+				"LENGTH": 113,
+				"LINK_ID": "81310",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 24,
+				"avgVwkd": 22,
+				"EtmIwrk": 10,
+				"EtmIwkd": 5,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90476569211303826,52.4022835052628224],
+								[4.90617968774443636,52.4017517052342541]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22694,
+				"LENGTH": 45,
+				"LINK_ID": "81311",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 23,
+				"avgVwkd": 23,
+				"EtmIwrk": 10,
+				"EtmIwkd": 5,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90351809798585503,52.4031589053026252],
+								[4.90375899584200337,52.4027853052876438]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22695,
+				"LENGTH": 24,
+				"LINK_ID": "81312",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 23,
+				"avgVwkd": 23,
+				"EtmIwrk": 10,
+				"EtmIwkd": 5,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90341869915232387,52.4033699053108393],
+								[4.90351809798585503,52.4031589053026252]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22696,
+				"LENGTH": 8,
+				"LINK_ID": "81313",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 23,
+				"avgVwkd": 22,
+				"EtmIwrk": 10,
+				"EtmIwkd": 4,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90338099955051376,52.4034409053136372],
+								[4.90341869915232387,52.4033699053108393]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22697,
+				"LENGTH": 7,
+				"LINK_ID": "81314",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 23,
+				"avgVwkd": 21,
+				"EtmIwrk": 5,
+				"EtmIwkd": 4,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90327979966727323,52.4034386053142711],
+								[4.90338099955051376,52.4034409053136372]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22698,
+				"LENGTH": 20,
+				"LINK_ID": "81315",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 23,
+				"avgVwkd": 22,
+				"EtmIwrk": 5,
+				"EtmIwkd": 2,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90342460037240002,52.4036185053196562],
+								[4.90338099955051376,52.4034409053136372]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22699,
+				"LENGTH": 42,
+				"LINK_ID": "81316",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 23,
+				"avgVwkd": 23,
+				"EtmIwrk": 5,
+				"EtmIwkd": 2,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.904034402489172,52.4042035053361985],
+								[4.90367840139987443,52.4038916053276012]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22700,
+				"LENGTH": 36,
+				"LINK_ID": "81317",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 23,
+				"avgVwkd": 22,
+				"EtmIwrk": 6,
+				"EtmIwkd": 2,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90434110341693774,52.4044701053435205],
+								[4.904034402489172,52.4042035053361985]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22701,
+				"LENGTH": 59,
+				"LINK_ID": "81318",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 23,
+				"avgVwkd": 22,
+				"EtmIwrk": 7,
+				"EtmIwkd": 2,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90499670429194357,52.4048163053511971],
+								[4.90434110341693774,52.4044701053435205]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22702,
+				"LENGTH": 7,
+				"LINK_ID": "81319",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 31,
+				"avgVwkd": -1,
+				"EtmIwrk": 7,
+				"EtmIwkd": -1,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90689740757882298,52.4059741053788244],
+								[4.90696760723119318,52.4059222053764699]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22703,
+				"LENGTH": 8,
+				"LINK_ID": "81320",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 27,
+				"avgVwkd": -1,
+				"EtmIwrk": 1,
+				"EtmIwkd": -1,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90681740794767141,52.4060277053813053],
+								[4.90689740757882298,52.4059741053788244]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22704,
+				"LENGTH": 64,
+				"LINK_ID": "81321",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 22,
+				"avgVwkd": -1,
+				"EtmIwrk": 1,
+				"EtmIwkd": -1,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90732340967670044,52.4065088053948003],
+								[4.90681740794767141,52.4060277053813053]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22705,
+				"LENGTH": 9,
+				"LINK_ID": "81342",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": -1,
+				"avgVwkd": -1,
+				"EtmIwrk": -1,
+				"EtmIwkd": -1,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90468999190760968,52.4022222052611824],
+								[4.90476569211303826,52.4022835052628224]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22706,
+				"LENGTH": 7,
+				"LINK_ID": "81345",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 29,
+				"avgVwkd": -1,
+				"EtmIwrk": 2,
+				"EtmIwkd": -1,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90602440384183058,52.4049915053500968],
+								[4.90592470385448109,52.4049682053499737]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22732,
+				"LENGTH": 8,
+				"LINK_ID": "81399",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 28,
+				"avgVwkd": -1,
+				"EtmIwrk": 8,
+				"EtmIwkd": -1,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90696760723119318,52.4059222053764699],
+								[4.90704120684416978,52.4058632053738336]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22733,
+				"LENGTH": 11,
+				"LINK_ID": "81409",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 23,
+				"avgVwkd": -1,
+				"EtmIwrk": 1,
+				"EtmIwkd": -1,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.9074283717399565,52.398762405121083],
+								[4.90726727205685176,52.3987875051230318]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22734,
+				"LENGTH": 100,
+				"LINK_ID": "81417",
+				"FCLASS": 18,
+				"FeatureTypeId": "link",
+				"avgVwrk": 22,
+				"avgVwkd": 21,
+				"EtmIwrk": 15,
+				"EtmIwkd": 5,
+				"NAME": "Buiksloterdijk"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90815321323806231,52.4074441054221296],
+								[4.90744671023071266,52.406652805399041]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22736,
+				"LENGTH": 27,
+				"LINK_ID": "81421",
+				"FCLASS": 18,
+				"FeatureTypeId": "link",
+				"avgVwrk": 22,
+				"avgVwkd": 11,
+				"EtmIwrk": 4,
+				"EtmIwkd": 1,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90754037696072309,52.399875605159167],
+								[4.90787037592845099,52.399745605152404]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22741,
+				"LENGTH": 18,
+				"LINK_ID": "81434",
+				"FCLASS": 18,
+				"FeatureTypeId": "link",
+				"avgVwrk": 20,
+				"avgVwkd": 14,
+				"EtmIwrk": 8,
+				"EtmIwkd": 2,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90787037592845099,52.399745605152404],
+								[4.90803037510598816,52.3996156051467992]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22745,
+				"LENGTH": 11,
+				"LINK_ID": "81442",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 18,
+				"avgVwkd": 14,
+				"EtmIwrk": 8,
+				"EtmIwkd": 2,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90803037510598816,52.3996156051467992],
+								[4.9081403746341925,52.3995456051436221]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22746,
+				"LENGTH": 77,
+				"LINK_ID": "81443",
+				"FCLASS": 18,
+				"FeatureTypeId": "link",
+				"avgVwrk": 27,
+				"avgVwkd": -1,
+				"EtmIwrk": 1,
+				"EtmIwkd": -1,
+				"NAME": "Floraweg"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90913037462094159,52.3997956051456981],
+								[4.90803037510598816,52.3996156051467992]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22747,
+				"LENGTH": 8,
+				"LINK_ID": "81452",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 33,
+				"avgVwkd": 18,
+				"EtmIwrk": 2,
+				"EtmIwkd": 1,
+				"NAME": "Kadoelenpad"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90894414669495749,52.4143036056632212],
+								[4.90893074634042659,52.4142304056606676]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22748,
+				"LENGTH": 7,
+				"LINK_ID": "81464",
+				"FCLASS": 18,
+				"FeatureTypeId": "link",
+				"avgVwrk": 27,
+				"avgVwkd": -1,
+				"EtmIwrk": 1,
+				"EtmIwkd": -1,
+				"NAME": "Floraweg"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.90922657455557765,52.3998066051454359],
+								[4.90913037462094159,52.3997956051456981]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22756,
+				"LENGTH": 9,
+				"LINK_ID": "81517",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 27,
+				"avgVwkd": -1,
+				"EtmIwrk": 4,
+				"EtmIwkd": -1,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.91071913072172084,52.4116259055527394],
+								[4.9107970302789461,52.4115587055497372]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"ROADID": 22757,
+				"LENGTH": 9,
+				"LINK_ID": "81518",
+				"FCLASS": 4,
+				"FeatureTypeId": "link",
+				"avgVwrk": 23,
+				"avgVwkd": -1,
+				"EtmIwrk": 3,
+				"EtmIwkd": -1,
+				"NAME": "refTest"
+			},
+			"geometry": {
+				"type": "LineString",
+				"coordinates": [
+								[4.91060913319977566,52.4120890055702375],
+								[4.910579632846094,52.4120108055676397]
+				]
+			}
+		}
+	]
+}

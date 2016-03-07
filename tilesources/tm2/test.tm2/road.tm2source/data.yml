@@ -1,0 +1,36 @@
+_prefs: 
+  disabled: []
+  inspector: false
+  mapid: mapbox.12345678
+  rev: s-2bd7afa7
+  saveCenter: true
+attribution: ''
+center: 
+  - 0
+  - 0
+  - 1
+description: ''
+Layer: 
+  - id: road
+    Datasource: 
+      file: "/dev/web/cs/csWeb-tile/tilesources/tm2/test.tm2/road.tm2source/road.json"
+      layer: road
+      type: geojson
+    description: Road data
+    fields: 
+      avgVwkd: Number
+      avgVwrk: Number
+      EtmIwkd: Number
+      EtmIwrk: Number
+      FCLASS: Number
+      FeatureTypeId: String
+      LENGTH: Number
+      LINK_ID: String
+      NAME: String
+      ROADID: Number
+    properties: 
+      "buffer-size": 32
+    srs: +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs
+maxzoom: 16
+minzoom: 0
+name: Road

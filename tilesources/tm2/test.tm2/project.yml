@@ -1,0 +1,27 @@
+_prefs: 
+  saveCenter: true
+_properties: 
+  bridge: 
+    "group-by": layer
+attribution: "Attribution"
+bounds: 
+  - -180
+  - -85.0511
+  - 180
+  - 85.0511
+center: 
+  - 4.8546
+  - 52.3572
+  - 10
+description: ''
+format: "png8:m=h"
+interactivity_layer: road
+layers: null
+maxzoom: 22
+minzoom: 0
+name: Roads in Amsterdam
+source: "tmsource:///dev/web/cs/csWeb-tile/tilesources/tm2/test.tm2/road.tm2source"
+styles: 
+  - road.mss
+template: |-
+  <strong>{{avgVwkd}}</strong>
