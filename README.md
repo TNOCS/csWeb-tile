@@ -66,7 +66,44 @@ NOTE: Windows binaries for the 3.x series require the Visual C++ Redistributable
 
 See https://github.com/mapnik/node-mapnik/wiki/WindowsBinaries for more details.
 
+## Creating your own standalone OpenStreetMap service
 
+Using the tilesources/tm2/world.tm2 project, you can share the whole world (or a subset, if you like) using node.js. All you need to do is download the world.mbtiles file (e.g. from [OSM2VectorTiles](http://osm2vectortiles.org/downloads) and add it to this folder. And you also need to update the source path in the project.yml file. 
+
+Optionally, you can specify another interactivity layer (see the tilejson.json file for additionaly layer names) and include a subset of the available fields in the template.
+
+NOTE: Due to a limitation in the mbtiles package, you can only open one mbtiles file at a time.
+
+In Leaflet, you can dan expose the tiles and UtfGrid as follows:
+
+```javascript
+L.tileLayer('world/{z}/{x}/{y}.png', {
+    attribution: 'Tiles courtesy of <a href="http://www.tno.nl/" target="_blank">TNO</a>.'
+}).addTo(map);
+        
+var utfGrid = new L.UtfGrid('world/{z}/{x}/{y}.grid.json', {
+    resolution: 4,
+    useJsonP: false
+});
+utfGrid.on('click', function (e) {
+    //click events are fired with e.data==null if an area with no hit is clicked
+    if (e.data) {
+        alert('click: ' + JSON.stringify(e.data, null, 2));
+    } else {
+        alert('click: nothing');
+    }
+});
+// utfGrid.on('mouseover', function (e) {
+//     console.log('hover: ' + JSON.stringify(e.data, null, 2));
+// });
+// utfGrid.on('mousemove', function (e) {
+//     console.log('move: ' + JSON.stringify(e.data, null, 2));
+// });
+// utfGrid.on('mouseout', function (e) {
+//     console.log('unhover: ' + JSON.stringify(e.data, null, 2));
+// });
+map.addLayer(utfGrid); 
+```
 
 ## 3D Cesium terrain server
 
