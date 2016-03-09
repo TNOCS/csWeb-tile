@@ -1,10 +1,12 @@
 # csWeb-tile
-Wrapper around [MapBox's TileLive](https://github.com/mapbox/tilelive) application to offer a simple npm package for serving tile sources. You can run it standalone, as part of the csWeb server, or any other express-based server for that matter. In case you wish to serve tiles standalone, you may also take a look at [tessera](https://github.com/mojodna/tessera), a standalone tile server created by mojodna, who also made most of the tilelive modules. 
+Wrapper around [MapBox's TileLive](https://github.com/mapbox/tilelive) application to offer a simple npm package for serving tile sources. You can run it standalone, as part of the csWeb server, or any other express-based server for that matter. 
+
+In case you wish to serve tiles standalone, you may also take a look at [tessera](https://github.com/mojodna/tessera), a standalone tile server created by mojodna, who also made most of the tilelive modules. 
 
 Currently, the following tilelive protocols are supported:
 * mbtiles (with raster data). Default location: ```tilesources\mbtiles```.
 * mbtiles (with vector tiles). Default location: `tilesources\tm2` (see world.tm2 example)
-* tmstyle (or .tm2) projects, i.e. [Mapbox Studio Classic](https://www.mapbox.com/mapbox-studio-classic/#win64) tilemill 2 projects. You can create them using the free Mapbox Studio Classic tool. Default location ```tilesources\tm2```. Currently only tested with geojson source layers. For tmstyle projects, we can also serve UtfGrid files - in that case, you need to edit the project.yml file manually to add the interactivity layer, as explained [here](https://www.mapbox.com/help/style-quickstart/#utfgrid).
+* tmstyle (or .tm2) projects, i.e. [Mapbox Studio Classic](https://www.mapbox.com/mapbox-studio-classic/#win64) tilemill 2 projects. You can create them using the free Mapbox Studio Classic tool. Default location ```tilesources\tm2```. Currently only tested with geojson source layers. For tmstyle projects, we can also serve UtfGrid files - in that case, you need to edit the project.yml file manually to add the interactivity layer, as explained in [UtfGrid](https://www.mapbox.com/help/style-quickstart/#utfgrid), [How interactivity works](https://www.mapbox.com/blog/how-interactivity-works-utfgrid/) and [here](http://www.macwright.org/2011/08/10/fast-hacky-queries-with-utfgrid.html).
 * Mapnik XML projects, e.g. you can create your own map using [TileMill](https://www.mapbox.com/tilemill/), and export it as a Mapnik project. Default location: ```tilelive\mapnik```.
 
 NOTE: Tests are performed using node 5 and npm 3 on Windows: in principle, everything should also work on Mac and Linux, but as I don't have access to these platforms, I cannot test it.
@@ -74,6 +76,8 @@ Using the tilesources/tm2/world.tm2 project, you can share the whole world (or a
 Optionally, you can specify another interactivity layer (see the tilejson.json file for additionaly layer names) and include a subset of the available fields in the template.
 
 NOTE: Due to a limitation in the mbtiles package, you can only open one mbtiles file at a time.
+
+Alternatively, take a look at [Klokan Technologies PHP tileserver](http://gis.stackexchange.com/questions/125037/self-hosting-mapbox-vector-tiles) or [here](https://github.com/klokantech/tileserver-php), also available as a [Docker image](http://osm2vectortiles.org/docs/start/), which exposes the data also as a WMTS service. 
 
 In Leaflet, you can dan expose the tiles and UtfGrid as follows:
 
