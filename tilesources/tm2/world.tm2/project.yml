@@ -1,0 +1,30 @@
+_prefs: 
+  saveCenter: true
+_properties: 
+  bridge: 
+    "group-by": layer
+attribution: "<a href='http://www.openstreetmap.org/' target='_blank'>&copy; OpenStreetMap</a>"
+bounds: 
+  - -180
+  - -85.0511
+  - 180
+  - 85.0511
+center: 
+  - 0
+  - 20
+  - 2
+description: ''
+format: "png8:m=h"
+interactivity_layer: poi_label
+layers: null
+maxzoom: 22
+minzoom: 0
+name: OSM Bright 2
+# source: http://localhost:9000/index.json
+source: mbtiles:///dev/web/cs/csWeb-tile/tilesources/tm2/world.tm2/world.mbtiles
+styles: 
+  - style.mss
+  - road.mss
+  - labels.mss
+template: |-
+  {{osm_id}}, {{ref}}, {{website}}, {{network}}, {{address}}, {{name}}, {{name_en}}, {{name_es}}, {{name_fr}}, {{name_de}}, {{name_ru}}, {{name_zh}}, {{type}}, {{scalerank}}, {{localrank}}, {{maki}}
