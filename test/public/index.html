@@ -32,16 +32,21 @@
     <script type="text/javascript">
         var map = new L.Map('map', {
     	   center: [52.3773, 4.8889],
-	   	   zoom: 8
+	   	   zoom: 8,
+           maxzoom: 22
         });
         
        	// L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
     	// 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 	    // }).addTo(map);
 
-       	L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-    		attribution: 'Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
-	    }).addTo(map);
+       	// L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+    	// 	attribution: 'Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
+	    // }).addTo(map);
+	
+       	// L.tileLayer('http://localhost:8888/world/{z}/{x}/{y}.png', {
+    	// 	attribution: 'Tiles courtesy of <a href="http://www.tno.nl/" target="_blank">TNO</a>.'
+	    // }).addTo(map);
 	
         function bicycleTest() {
            	L.tileLayer('mainroad/{z}/{x}/{y}.png').addTo(map);
@@ -52,6 +57,10 @@
         }
     
         function bicycleTest3() {
+            L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+                attribution: 'Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
+            }).addTo(map);
+	
            	L.tileLayer('road/{z}/{x}/{y}.png').addTo(map);
             var utfGrid = new L.UtfGrid('road/{z}/{x}/{y}.grid.json', { //.grid.json?callback={cb}
                 resolution: 4,
@@ -77,6 +86,36 @@
             map.addLayer(utfGrid); 
         }
     
+        function worldTest() {
+            L.tileLayer('world/{z}/{x}/{y}.png', {
+                attribution: 'Tiles courtesy of <a href="http://www.tno.nl/" target="_blank">TNO</a>.'
+            }).addTo(map);
+        
+           	// L.tileLayer('road/{z}/{x}/{y}.png').addTo(map);
+            var utfGrid = new L.UtfGrid('world/{z}/{x}/{y}.grid.json', {
+                resolution: 4,
+                useJsonP: false
+            });
+            utfGrid.on('click', function (e) {
+                //click events are fired with e.data==null if an area with no hit is clicked
+                if (e.data) {
+                    alert('click: ' + JSON.stringify(e.data, null, 2));
+                } else {
+                    alert('click: nothing');
+                }
+            });
+            // utfGrid.on('mouseover', function (e) {
+            //     console.log('hover: ' + JSON.stringify(e.data, null, 2));
+            // });
+            // utfGrid.on('mousemove', function (e) {
+            //     console.log('move: ' + JSON.stringify(e.data, null, 2));
+            // });
+            // utfGrid.on('mouseout', function (e) {
+            //     console.log('unhover: ' + JSON.stringify(e.data, null, 2));
+            // });
+            map.addLayer(utfGrid); 
+        }
+    
         function test_tm2() {
            	L.tileLayer('http://localhost:8888/test/{z}/{x}/{y}.png').addTo(map);
         }
@@ -91,7 +130,7 @@
 			}).addTo(map);
 		}
         
-        bicycleTest3();
+        worldTest();
     </script>
 </body>
 

@@ -18,6 +18,7 @@
         "typings/rimraf/rimraf.d.ts",
         "typings/async/async.d.ts",
         "test/app.ts",
+        "test/mbtiles_test.ts",        
         "index.ts"
     ]
 }
