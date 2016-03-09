@@ -2,7 +2,8 @@
 Wrapper around [MapBox's TileLive](https://github.com/mapbox/tilelive) application to offer a simple npm package for serving tile sources. You can run it standalone, as part of the csWeb server, or any other express-based server for that matter. In case you wish to serve tiles standalone, you may also take a look at [tessera](https://github.com/mojodna/tessera), a standalone tile server created by mojodna, who also made most of the tilelive modules. 
 
 Currently, the following tilelive protocols are supported:
-* mbtiles (with raster data, not with vector tlies). Default location: ```tilesources\mbtiles```.
+* mbtiles (with raster data). Default location: ```tilesources\mbtiles```.
+* mbtiles (with vector tiles). Default location: `tilesources\tm2` (see world.tm2 example)
 * tmstyle (or .tm2) projects, i.e. [Mapbox Studio Classic](https://www.mapbox.com/mapbox-studio-classic/#win64) tilemill 2 projects. You can create them using the free Mapbox Studio Classic tool. Default location ```tilesources\tm2```. Currently only tested with geojson source layers. For tmstyle projects, we can also serve UtfGrid files - in that case, you need to edit the project.yml file manually to add the interactivity layer, as explained [here](https://www.mapbox.com/help/style-quickstart/#utfgrid).
 * Mapnik XML projects, e.g. you can create your own map using [TileMill](https://www.mapbox.com/tilemill/), and export it as a Mapnik project. Default location: ```tilelive\mapnik```.
 
