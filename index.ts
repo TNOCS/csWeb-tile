@@ -100,7 +100,7 @@ export class TileSource {
                         files.forEach(file => {
                             switch (protocol) {
                                 case 'tm2':
-                                case 'mbtiles':
+                                // case 'mbtiles':
                                 // case 'mapnik':
                                 // case 'carto+file':
                                     tasks.push((cb: Function) => {
@@ -127,10 +127,13 @@ export class TileSource {
         if (/utfgrid/.test(protocol)) {
             if (this.protocols.indexOf('utfgrid') < 0) {
                 this.protocols.push('utfgrid');
+                this.registerProtocol('mbtiles');
                 require('tilelive-vector'  ).registerProtocols(tilelive);
                 require('tilelive-bridge'  ).registerProtocols(tilelive);
+                require('tilejson'         ).registerProtocols(tilelive);
                 require('tilelive-utfgrid' )(tilelive).registerProtocols(tilelive);
                 require('tilelive-tmsource')(tilelive).registerProtocols(tilelive);
+                require('tilelive-http'    )(tilelive).registerProtocols(tilelive);
             }
             console.log(`Registering protocol ${protocol}.`);
             this.registerProtocol(protocol.replace('utfgrid+', ''));
@@ -172,6 +175,7 @@ export class TileSource {
      * @param  {Function} callback Callback function to call the function asynchronously.
      */
     private load(protocol: string, file: string, fallbackUri: string, sourceFolder: string, callback: Function) {
+        if (file[0] === '_') return;
         this.registerProtocol(protocol);
         // var re = new RegExp('/[a-zA-Z\d]*\/(?<z>\d+)\/(?<x>\d+)\/(?<y>\d+)\./');
         let sourceFile = sourceFolder ? path.join(sourceFolder, file) : file;

@@ -65,7 +65,7 @@ var TileSource = (function () {
                         files.forEach(function (file) {
                             switch (protocol) {
                                 case 'tm2':
-                                case 'mbtiles':
+                                    // case 'mbtiles':
                                     // case 'mapnik':
                                     // case 'carto+file':
                                     tasks.push(function (cb) {
@@ -91,10 +91,13 @@ var TileSource = (function () {
         if (/utfgrid/.test(protocol)) {
             if (this.protocols.indexOf('utfgrid') < 0) {
                 this.protocols.push('utfgrid');
+                this.registerProtocol('mbtiles');
                 require('tilelive-vector').registerProtocols(tilelive);
                 require('tilelive-bridge').registerProtocols(tilelive);
+                require('tilejson').registerProtocols(tilelive);
                 require('tilelive-utfgrid')(tilelive).registerProtocols(tilelive);
                 require('tilelive-tmsource')(tilelive).registerProtocols(tilelive);
+                require('tilelive-http')(tilelive).registerProtocols(tilelive);
             }
             console.log("Registering protocol " + protocol + ".");
             this.registerProtocol(protocol.replace('utfgrid+', ''));
@@ -135,6 +138,8 @@ var TileSource = (function () {
      */
     TileSource.prototype.load = function (protocol, file, fallbackUri, sourceFolder, callback) {
         var _this = this;
+        if (file[0] === '_')
+            return;
         this.registerProtocol(protocol);
         // var re = new RegExp('/[a-zA-Z\d]*\/(?<z>\d+)\/(?<x>\d+)\/(?<y>\d+)\./');
         var sourceFile = sourceFolder ? path.join(sourceFolder, file) : file;
