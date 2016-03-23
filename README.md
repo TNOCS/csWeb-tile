@@ -1,5 +1,5 @@
 # csWeb-tile
-Wrapper around [MapBox's TileLive](https://github.com/mapbox/tilelive) application to offer a simple npm package for serving tile sources. You can run it standalone, as part of the csWeb server, or any other express-based server for that matter. 
+csWeb-tile is a wrapper around [MapBox's TileLive](https://github.com/mapbox/tilelive) application to offer a simple npm package for serving tile sources. You can run it standalone, as part of the csWeb server, or any other express-based server for that matter. 
 
 In case you wish to serve tiles standalone, you may also take a look at [tessera](https://github.com/mojodna/tessera), a standalone tile server created by mojodna, who also made most of the tilelive modules. 
 
@@ -11,7 +11,18 @@ Currently, the following tilelive protocols are supported:
 
 NOTE: Tests are performed using node 5 and npm 3 on Windows: in principle, everything should also work on Mac and Linux, but as I don't have access to these platforms, I cannot test it.
 
-## Usage
+## Installation
+
+You can simply install it using the node package manager.
+```
+npm i -g csweb-tile
+```
+
+## Building it from scratch
+
+Alternatively, you can build it yourself, assuming you have installed TypeScript (otherwise, run ```npm i -g typescript```). Check out the project using git clone (or download the zip) and simply run ```tsc``` in the main folder. Next, run ```node test\app.js``` and you can visit ```http://localhost:8888/``` to run leaflet. On the command line, you see the tile layers that are being shared.
+
+## Usage instructions
 
 For example, if you want to share mbtiles files (with raster data), do the following.
 
@@ -20,7 +31,8 @@ For example, if you want to share mbtiles files (with raster data), do the follo
 * Create a new project folder, ```csWeb-tile``` for example and ```cd csWeb-tile```.
 * Create a folder ```tilesources\mbtiles```
 * Put your mbtiles file in the newly created ```tilesources\mbtiles``` folder
-* Run ```node csWeb-tile```
+* Run ```csweb-tile```
+**NOTE:** You can only open one mbtiles file at a time, it seems, most likely because mbtiles will open an sqlite database file for you, and you won't be able to open multiple ones simultaneously. Please correct me if I'm wrong, however.  
 
 ### In [csWeb](https://github.com/TNOCS/csWeb)
 
@@ -36,7 +48,7 @@ tsc
 ```
 * Add the mbtiles file(s) to a folder, e.g. ```tilesources/mbtiles```. Note that you can change 
 the ```tilesources``` name, but the subfolder's name needs to be the same as the tilelive protocol, 
-i.e. in this case ```mbtiles```. 
+i.e. in this case ```mbtiles```. See above.
 * Add the tile server to your server.ts file. When starting the server (```node server.js```), you should see a 
 message on the console upon loading the file. 
 ```
@@ -61,13 +73,16 @@ cs.start(() => {
 });
 ```
 
+When you have csWeb-tile running, ready to serve tiles, you still need to add your tiles to the csWeb project.json (or the solution, in case you wish to use it as the base layer, projects.json).
+
+
 ## Installing Mapnik
 NOTE: Windows binaries for the 3.x series require the Visual C++ Redistributable Packages for Visual Studio 2015:
 
-* https://mapbox.s3.amazonaws.com/windows-builds/visual-studio-runtimes/vcredist-VS2015/vcredist_x64.exe
-* https://mapbox.s3.amazonaws.com/windows-builds/visual-studio-runtimes/vcredist-VS2015/vcredist_x86.exe
+* [64 bit binaries](https://mapbox.s3.amazonaws.com/windows-builds/visual-studio-runtimes/vcredist-VS2015/vcredist_x64.exe)
+* [32 bit binaries](https://mapbox.s3.amazonaws.com/windows-builds/visual-studio-runtimes/vcredist-VS2015/vcredist_x86.exe)
 
-See https://github.com/mapnik/node-mapnik/wiki/WindowsBinaries for more details.
+See [here](https://github.com/mapnik/node-mapnik/wiki/WindowsBinaries) for more details.
 
 ## Creating your own standalone OpenStreetMap service
 
