@@ -163,4 +163,4 @@ go get github.com\gorilla\mux
 ```
 %GOPATH%\bin\cesium-terrain-server.exe -base-terrain-url /tilesets -dir /MY_TILE_DATA_FOLDER
 ```
-* If this is still working, you should be able to visit [http://localhost:8000/tilesets/layer.json](http://localhost:8000/tilesets/layer.json) and get your 'layer.json' file. 
+* If this is still working, you should be able to visit [http://localhost:8000/tilesets/YOUR_DATA_SET_IN_MY_TILE_FOLDER/layer.json](http://localhost:8000/tilesets/YOUR_DATA_SET_IN_MY_TILE_FOLDER/layer.json) and get your 'layer.json' file. 
