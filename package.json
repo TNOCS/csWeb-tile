@@ -4,7 +4,9 @@
   "description": "Wrapper around MapBox's TileLive application to offer a simple npm package for serving tile sources in csWeb.",
   "main": "index.js",
   "scripts": {
-    "test": "node test/app.js"
+    "test": "node test/app.js",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "bin": {
     "csWeb-tile": "test/run.js"
@@ -37,6 +39,8 @@
     "tilelive-tmsource": "^0.4.3",
     "tilelive-tmstyle": "^0.5.1",
     "tilelive-utfgrid": "^0.2.0",
-    "tilelive-vector": "^3.8.0"
-  }
+    "tilelive-vector": "^3.8.0",
+    "snyk": "^1.25.0"
+  },
+  "snyk": true
 }
