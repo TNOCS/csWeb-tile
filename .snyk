@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.7.0
+version: v1.12.0
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -14,3 +14,8 @@ patch:
   'npm:tough-cookie:20160722':
     - tilelive-vector > request > tough-cookie:
         patched: '2017-02-18T10:10:55.162Z'
+  'npm:tunnel-agent:20170305':
+    - tilejson > requestretry > request > tunnel-agent:
+        patched: '2018-06-30T03:41:18.158Z'
+    - tilelive-vector > request > tunnel-agent:
+        patched: '2018-06-30T03:41:18.158Z'

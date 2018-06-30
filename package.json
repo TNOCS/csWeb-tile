@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node test/app.js",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepublish": "npm run snyk-protect",
+    "prepare": "npm run snyk-protect"
   },
   "bin": {
     "csWeb-tile": "test/run.js"
@@ -40,7 +41,7 @@
     "tilelive-tmstyle": "^0.5.1",
     "tilelive-utfgrid": "^0.2.0",
     "tilelive-vector": "^3.8.0",
-    "snyk": "^1.25.0"
+    "snyk": "^1.88.0"
   },
   "snyk": true
 }
