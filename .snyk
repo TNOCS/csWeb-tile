@@ -43,3 +43,8 @@ patch:
         patched: '2019-07-06T03:18:51.170Z'
     - tilejson > requestretry > request > form-data > async > lodash:
         patched: '2019-07-06T03:18:51.170Z'
+  SNYK-JS-HTTPSPROXYAGENT-469131:
+    - snyk > proxy-agent > https-proxy-agent:
+        patched: '2019-10-05T03:18:40.753Z'
+    - snyk > proxy-agent > pac-proxy-agent > https-proxy-agent:
+        patched: '2019-10-05T03:18:40.753Z'

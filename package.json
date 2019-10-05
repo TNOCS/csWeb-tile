@@ -40,7 +40,7 @@
     "tilelive-tmstyle": "^0.5.1",
     "tilelive-utfgrid": "^0.2.0",
     "tilelive-vector": "^3.8.0",
-    "snyk": "^1.192.3"
+    "snyk": "^1.231.0"
   },
   "snyk": true
 }
