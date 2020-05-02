@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.5
+version: v1.14.1
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -43,3 +43,10 @@ patch:
         patched: '2019-07-06T03:18:51.170Z'
     - tilejson > requestretry > request > form-data > async > lodash:
         patched: '2019-07-06T03:18:51.170Z'
+  SNYK-JS-LODASH-567746:
+    - tilelive-tmsource > mapnik-reference > lodash:
+        patched: '2020-05-02T03:19:09.139Z'
+    - tilelive-vector > request > form-data > async > lodash:
+        patched: '2020-05-02T03:19:09.139Z'
+    - tilejson > requestretry > request > form-data > async > lodash:
+        patched: '2020-05-02T03:19:09.139Z'
